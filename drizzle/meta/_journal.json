@@ -8,6 +8,34 @@
       "when": 1735237375148,
       "tag": "0000_far_stick",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1735243863762,
+      "tag": "0001_soft_wraith",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735243934995,
+      "tag": "0002_serious_wendell_vaughn",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735248744157,
+      "tag": "0003_bumpy_namorita",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1735248924926,
+      "tag": "0004_cloudy_domino",
+      "breakpoints": true
     }
   ]
 }
