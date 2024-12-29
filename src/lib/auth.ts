@@ -1,6 +1,5 @@
 import { db } from "@/db";
-import { sessionTable, usersTable } from "@/db/schemas";
-import { Session, User } from "@/db/schemas/types";
+import { Session, sessionTable, usersTable } from "@/db/schemas";
 import { sha256 } from "@oslojs/crypto/sha2";
 import {
   encodeBase32LowerCaseNoPadding,
@@ -38,7 +37,14 @@ export async function validateSessionToken(
 ): Promise<SessionValidationResult> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await db
-    .select({ user: usersTable, session: sessionTable })
+    .select({
+      user: {
+        id: usersTable.id,
+        name: usersTable.name,
+        email: usersTable.email,
+      },
+      session: sessionTable,
+    })
     .from(sessionTable)
     .innerJoin(usersTable, eq(sessionTable.userId, usersTable.id))
     .where(eq(sessionTable.id, sessionId));
@@ -67,7 +73,7 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 }
 
 export type SessionValidationResult =
-  | { session: Session; user: User }
+  | { session: Session; user: { id: string; name: string; email: string } }
   | { session: null; user: null };
 
 export async function setSessionTokenCookie(

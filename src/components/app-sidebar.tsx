@@ -10,17 +10,13 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { AppLogo } from "./app-logo";
+import { getCurrentSession } from "@/lib/auth";
 
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-};
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const { user } = await getCurrentSession();
+  if (!user) return null;
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -31,7 +27,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProtected />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 bg-gradient-to-br from-gray-900 to-gray-600 ">
+    <div className="flex min-h-screen w-full items-center justify-center p-4 bg-gradient-to-bl from-cyan-300 via-cyan-100 to-emerald-50 ">
       <div className="w-full max-w-2xl">
-        <div className="glassmorphism rounded-xl p-8 text-white">
+        <div className="glassmorphism rounded-xl p-8 text-black">
           <h1 className="mb-6 text-4xl font-bold">MIRX Admin Panel</h1>
           <p className="mb-8 text-lg">
             Streamline your workflow with our powerful and intuitive admin
@@ -56,19 +56,10 @@ export default function Page() {
             </li>
           </ul>
           <div className="flex space-x-4">
-            <Button
-              size="lg"
-              className="bg-white text-gray-900 hover:bg-gray-200"
-              asChild
-            >
+            <Button size="lg">
               <Link href="/auth/login">Get Started</Link>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-slate-700 hover:bg-white/10 hover:text-white"
-              asChild
-            >
+            <Button size="lg" variant="secondary">
               <Link href="/dashboard">See Dashboard</Link>
             </Button>
           </div>

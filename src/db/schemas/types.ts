@@ -1,25 +1,13 @@
-import { InferSelectModel } from "drizzle-orm";
-import { usersTable } from "./user-schema";
-import { sessionTable } from "./session-schema";
-
-//table type
-export type User = InferSelectModel<typeof usersTable>;
-export type Session = InferSelectModel<typeof sessionTable>;
-
-//relation type
-
-//helper
-type LogDataMap = {
-  CREATE: { resourceId: string; changes: Record<string, unknown> };
-  READ: { resourceId: string | null; query: Record<string, unknown> };
-  UPDATE: { resourceId: string; changes: Record<string, unknown> };
+export type LogDataMap = {
+  CREATE: { resourceId: string };
+  READ: { resourceId: string | null };
+  UPDATE: { resourceId: string };
   DELETE: { resourceId: string };
   LOGIN: { ip: string };
   LOGOUT: null;
-  SYSTEM_START: { version: string; env: string };
-  ERROR: { endpoint: string; errorMessage: string };
+  ERROR: { endpoint?: string; errorMessage?: string };
 };
 
-type LogAction = keyof LogDataMap;
+export type LogAction = keyof LogDataMap;
 
-type CRUDResource = "users" | "posts" | "comments" | "products"; // Extend as needed
+export type CRUDResource = "users" | "sessions";

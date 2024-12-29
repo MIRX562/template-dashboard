@@ -4,6 +4,7 @@ export type App = {
   name: string;
   logo: LucideIcon;
   company: string;
+  Description: string;
 };
 
 export type NavItem = {
@@ -21,7 +22,8 @@ export type NavItemProtected = {
 };
 
 export type User = {
+  id: string;
   name: string;
   email: string;
-  avatar: string;
+  // avatar: string;
 };
