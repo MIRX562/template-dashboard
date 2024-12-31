@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { logout } from "@/actions/auth-action";
 import { User } from "@/config/types";
+import Link from "next/link";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
@@ -64,9 +65,11 @@ export function NavUser({ user }: { user: User }) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserRoundCog />
-                Profile
+              <DropdownMenuItem asChild>
+                <Link href="/profile">
+                  <UserRoundCog />
+                  Profile
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

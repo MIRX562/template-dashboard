@@ -17,16 +17,16 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { loginSchema } from "@/db/schemas";
 import { login } from "@/actions/auth-action";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
     try {
-      console.log(values);
       toast.promise(login(values.email, values.password), {
         loading: "Logging In....",
         success: "Welcome Back!",
@@ -34,9 +34,9 @@ export default function LoginForm() {
       });
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      // toast.error("Failed to submit the form. Please try again.");
     }
-    redirect("/dashboard");
+    router.refresh();
   }
 
   return (

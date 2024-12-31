@@ -17,8 +17,10 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { RegisterUser, registerUserSchema } from "@/db/schemas";
 import { register } from "@/actions/auth-action";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+  const router = useRouter();
   const form = useForm<RegisterUser>({
     resolver: zodResolver(registerUserSchema),
   });
@@ -32,8 +34,9 @@ export default function RegisterForm() {
       });
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      // toast.error("Failed to submit the form. Please try again.");
     }
+    router.push("/auth/login");
   }
 
   return (

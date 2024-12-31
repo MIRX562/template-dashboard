@@ -1,4 +1,5 @@
 "use server";
+
 import { db } from "@/db";
 import { RegisterUser, usersTable } from "@/db/schemas";
 import {
@@ -59,6 +60,7 @@ export async function register(data: RegisterUser) {
       return { success: false, message: "An unexpected error occurred" };
     }
   }
+  // redirect("/auth/login");
 }
 
 export async function login(email: string, password: string) {
@@ -88,7 +90,7 @@ export async function login(email: string, password: string) {
       { ip: "TODO" } // Replace with actual IP if available
     );
 
-    return { success: true, message: "Logged In!" };
+    // return { success: true, message: "Logged In!" };
   } catch (error) {
     if (error instanceof Error) {
       return { success: false, message: error.message };
@@ -96,6 +98,7 @@ export async function login(email: string, password: string) {
       return { success: false, message: "An unexpected error occurred" };
     }
   }
+  // redirect("/dashboard");
 }
 
 export async function logout() {

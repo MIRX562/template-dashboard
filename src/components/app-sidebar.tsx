@@ -24,7 +24,7 @@ export async function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
-        <NavProtected />
+        {user.role == "Admin" && <NavProtected />}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
