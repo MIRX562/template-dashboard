@@ -1,3 +1,4 @@
+"use server";
 import { db } from "@/db";
 import { logsTable } from "@/db/schemas/log-schema";
 
@@ -13,7 +14,7 @@ export type LogDataMap = {
 
 export type LogAction = keyof LogDataMap;
 
-export type CRUDResource = "users" | "sessions";
+export type CRUDResource = "users" | "sessions" | "files";
 
 export async function logAction<T extends LogAction>(
   userId: string | null,

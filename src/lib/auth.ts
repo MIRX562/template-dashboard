@@ -43,6 +43,7 @@ export async function validateSessionToken(
         name: usersTable.name,
         email: usersTable.email,
         role: usersTable.role,
+        avatarUrl: usersTable.avatarUrl,
       },
       session: sessionTable,
     })
@@ -76,7 +77,13 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 export type SessionValidationResult =
   | {
       session: Session;
-      user: { id: string; name: string; email: string; role: string };
+      user: {
+        id: string;
+        name: string;
+        email: string;
+        role: string;
+        avatarUrl: string;
+      };
     }
   | { session: null; user: null };
 

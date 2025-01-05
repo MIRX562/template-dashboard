@@ -1,3 +1,4 @@
+"use server";
 import { CreateUser, usersTable } from "@/db/schemas";
 import { logAction } from "./log-action";
 import { db } from "@/db";

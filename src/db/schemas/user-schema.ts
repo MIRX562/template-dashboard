@@ -20,6 +20,7 @@ export const usersTable = pgTable(
     email: varchar({ length: 255 }).notNull().unique(),
     password: text().notNull(),
     role: rolesEnum().default("Employee").notNull(),
+    avatarUrl: text(),
     createdAt: timestamp().defaultNow(),
   },
   (table) => {

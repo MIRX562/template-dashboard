@@ -107,7 +107,13 @@ export async function logout() {
 
     // Log the successful logout
     if (user) {
-      await logAction(user.id, "LOGOUT", "sessions", "User logged out", null);
+      await logAction(
+        user.id,
+        "LOGOUT",
+        "sessions",
+        `User: ${user.name} logged out`,
+        null
+      );
     }
   }
 
