@@ -1,20 +1,14 @@
 "use server";
 import { db } from "@/db";
-import { logsTable } from "@/db/schemas/log-schema";
-
-export type LogDataMap = {
-  CREATE: { resourceId: string };
-  READ: { resourceId: string | null };
-  UPDATE: { resourceId: string };
-  DELETE: { resourceId: string };
-  LOGIN: { ip: string };
-  LOGOUT: null;
-  ERROR: { endpoint?: string; errorMessage?: string };
-};
-
-export type LogAction = keyof LogDataMap;
-
-export type CRUDResource = "users" | "sessions" | "files";
+import { usersTable } from "@/db/schemas";
+import {
+  CRUDResource,
+  LogAction,
+  LogDataMap,
+  logsTable,
+} from "@/db/schemas/log-schema";
+import { getCurrentSession } from "@/lib/auth";
+import { eq } from "drizzle-orm";
 
 export async function logAction<T extends LogAction>(
   userId: string | null,
@@ -61,3 +55,32 @@ export async function logDelete(
     resourceId,
   });
 }
+
+// fetcher
+export async function getLogs() {
+  try {
+    //session validation
+    const { user } = await getCurrentSession();
+    if (!user) {
+      throw new Error(`Not Authorized!!`);
+    }
+    const logs = db
+      .select({
+        id: logsTable.id,
+        actor: usersTable.name,
+        action: logsTable.action,
+        resource: logsTable.resource,
+        message: logsTable.message,
+        data: logsTable.data,
+        date: logsTable.createdAt,
+      })
+      .from(logsTable)
+      .leftJoin(usersTable, eq(logsTable.userId, usersTable.id))
+      .execute();
+    return logs;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export type GetLogs = Awaited<ReturnType<typeof getLogs>>[number];

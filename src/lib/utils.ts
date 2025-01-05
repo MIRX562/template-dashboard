@@ -21,3 +21,11 @@ export const formatCurrency = (amount: number) => {
     currency: "IDR",
   }).format(amount);
 };
+
+export const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("id", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};

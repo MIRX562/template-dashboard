@@ -36,7 +36,9 @@ export default async function DashboardLayout({
             <NotificationPanel />
           </div>
         </header>
-        <div className="flex-1 overflow-auto">{children}</div>
+        <main className="flex flex-1 flex-col gap-4 overflow-auto">
+          {children}
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );
