@@ -8,7 +8,6 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-
 import { z } from "zod";
 
 export const rolesEnum = pgEnum("roles", ["Admin", "Employee"]);
@@ -29,15 +28,47 @@ export const usersTable = pgTable(
 );
 export type User = InferSelectModel<typeof usersTable>;
 
-//zod
+//? ZOD Schemas
+//auth
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+export type Login = z.infer<typeof loginSchema>;
+
 export const registerUserSchema = z.object({
   name: z.string(),
-  email: z.string(),
+  email: z.string().email(),
   password: z.string(),
 });
 export type RegisterUser = z.infer<typeof registerUserSchema>;
 
-export const loginSchema = z.object({
-  email: z.string(),
-  password: z.string(),
+//user profile
+export const updateProfileSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
 });
+export type UpdateProfile = z.infer<typeof updateProfileSchema>;
+
+export const passwordResetSchema = z
+  .object({
+    current_pass: z.string(),
+    new_pass: z.string(),
+    confirm_pass: z.string(),
+    id: z.string(),
+  })
+  .refine((data) => data.new_pass === data.confirm_pass, {
+    message: "Passwords don't match",
+    path: ["confirm_pass"],
+  });
+export type ResetPassword = z.infer<typeof passwordResetSchema>;
+
+//user management
+export const createUserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  role: z.enum(["Admin", "Employee"]),
+});
+export type CreateUser = z.infer<typeof createUserSchema>;

@@ -1,5 +1,3 @@
-import { MoreHorizontal } from "lucide-react";
-
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -14,12 +12,12 @@ export function NavProtected() {
   const items = navProtected;
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+    <SidebarGroup>
       <SidebarGroupLabel>Admin</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
+          <SidebarMenuItem key={item.name} >
+            <SidebarMenuButton asChild tooltip={item.name}>
               <Link href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>

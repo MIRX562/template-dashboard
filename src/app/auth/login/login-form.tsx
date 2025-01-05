@@ -30,11 +30,10 @@ export default function LoginForm() {
       toast.promise(login(values.email, values.password), {
         loading: "Logging In....",
         success: "Welcome Back!",
-        error: "Login Failed!",
+        error: "Login Failed, check your username or password",
       });
     } catch (error) {
       console.error("Form submission error", error);
-      // toast.error("Failed to submit the form. Please try again.");
     }
     router.refresh();
   }

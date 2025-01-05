@@ -14,30 +14,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useRouter } from "next/navigation";
+import { passwordResetSchema } from "@/db/schemas";
+import { resetPassword } from "@/actions/user-profile-action";
 
-const formSchema = z.object({
-  current_pass: z.string(),
-  new_pass: z.string(),
-  confirm_pass: z.string(),
-});
-
-export default function ResetPasswordForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export default function ResetPasswordForm(data: { id: string }) {
+  const form = useForm<z.infer<typeof passwordResetSchema>>({
+    resolver: zodResolver(passwordResetSchema),
+    defaultValues: { id: data.id },
   });
+  const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof passwordResetSchema>) {
     try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      toast.promise(resetPassword(values), {
+        loading: "Resetting password ...",
+        success: "New Password applied!",
+        error: "Wrong current password",
+      });
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
     }
+    router.refresh();
   }
 
   return (
@@ -83,6 +81,21 @@ export default function ResetPasswordForm() {
                 <PasswordInput placeholder="Placeholder" {...field} />
               </FormControl>
               <FormDescription>Confirm your password.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="id"
+          render={({ field }) => (
+            <FormItem className="hidden">
+              <FormLabel>id</FormLabel>
+              <FormControl>
+                <PasswordInput placeholder="Placeholder" {...field} />
+              </FormControl>
+              <FormDescription>id</FormDescription>
               <FormMessage />
             </FormItem>
           )}

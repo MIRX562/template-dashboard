@@ -26,11 +26,7 @@ export default async function ProfielPage() {
               Role: <span className="font-normal">{user.role}</span>
             </p>
           </div>
-          <UserProfileForm
-            name={user.name}
-            email={user.email}
-            userId={user.id}
-          />
+          <UserProfileForm name={user.name} email={user.email} id={user.id} />
         </CardContent>
       </Card>
 
@@ -39,7 +35,7 @@ export default async function ProfielPage() {
           <CardTitle>Reset Password</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResetPasswordForm />
+          <ResetPasswordForm id={user.id} />
         </CardContent>
       </Card>
     </div>

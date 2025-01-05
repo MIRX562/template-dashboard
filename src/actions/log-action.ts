@@ -1,6 +1,19 @@
 import { db } from "@/db";
 import { logsTable } from "@/db/schemas/log-schema";
-import { CRUDResource, LogAction, LogDataMap } from "@/db/schemas/types";
+
+export type LogDataMap = {
+  CREATE: { resourceId: string };
+  READ: { resourceId: string | null };
+  UPDATE: { resourceId: string };
+  DELETE: { resourceId: string };
+  LOGIN: { ip: string };
+  LOGOUT: null;
+  ERROR: { endpoint?: string; errorMessage?: string };
+};
+
+export type LogAction = keyof LogDataMap;
+
+export type CRUDResource = "users" | "sessions";
 
 export async function logAction<T extends LogAction>(
   userId: string | null,

@@ -13,7 +13,13 @@ const publicRoutes = [
 
 const authRoutes = ["/auth/login", "/auth/register", "/forgot-password"];
 
-const protectedRoutes = ["/dashboard", "/profile", "/settings", "/admin"];
+const protectedRoutes = [
+  "/dashboard",
+  "/profile",
+  "/settings",
+  "/admin",
+  "/uploads",
+];
 
 // Utility function to check if URL matches any of the paths
 function matchesPath(url: string, paths: string[]): boolean {
@@ -102,15 +108,14 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 }
 
 // Configure which routes should be handled by the middleware
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    "/((?!_next/static|_next/image|favicon.ico|public/).*)",
-  ],
-};
+// export const config = {
+//   matcher: [
+//     /*
+//      * Match all request paths except:
+//      * - _next/static (static files)
+//      * - _next/image (image optimization files)
+//      * - favicon.ico (favicon file)
+//      */
+//     "/((?!_next/static|_next/image|favicon.ico).*)",
+//   ],
+// };

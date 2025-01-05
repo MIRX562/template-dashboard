@@ -1,21 +1,25 @@
 import { NavItem } from "./types";
-import { SquareTerminal, Bot } from "lucide-react";
+import { LayoutDashboard, MoreHorizontal, MoreVertical } from "lucide-react";
 
 const navMainConfig: NavItem[] = [
   {
-    title: "Not Nested",
-    url: "#",
-    icon: SquareTerminal,
-    isActive: true,
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard,
   },
   {
-    title: "Nested",
+    title: "more single menu",
+    url: "/dashboard",
+    icon: MoreHorizontal,
+  },
+  {
+    title: "Nested menus",
     url: "#",
-    icon: Bot,
+    icon: MoreVertical,
     items: [
-      { title: "Genesis", url: "#" },
-      { title: "Explorer", url: "#" },
-      { title: "Quantum", url: "#" },
+      { title: "Menu 1", url: "#" },
+      { title: "Menu 2", url: "#" },
+      { title: "Menu 3", url: "#" },
     ],
   },
 ];

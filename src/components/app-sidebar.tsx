@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppLogo } from "./app-logo";
 import { getCurrentSession } from "@/lib/auth";
+import { Separator } from "./ui/separator";
 
 export async function AppSidebar({
   ...props
@@ -22,9 +23,12 @@ export async function AppSidebar({
       <SidebarHeader>
         <AppLogo />
       </SidebarHeader>
+      <Separator />
       <SidebarContent>
         <NavMain />
+        <Separator />
         {user.role == "Admin" && <NavProtected />}
+        <Separator />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

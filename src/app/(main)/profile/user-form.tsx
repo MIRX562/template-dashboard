@@ -14,34 +14,32 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-const formSchema = z.object({
-  name: z.string(),
-  email: z.string(),
-});
+import { updateProfileSchema } from "@/db/schemas";
+import { updateProfile } from "@/actions/user-profile-action";
+import { useRouter } from "next/navigation";
 
 export default function UserProfileForm(data: {
+  id: string;
   name: string;
   email: string;
-  userId: string;
 }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof updateProfileSchema>>({
+    resolver: zodResolver(updateProfileSchema),
     defaultValues: data,
   });
+  const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof updateProfileSchema>) {
     try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      toast.promise(updateProfile(values), {
+        loading: "updating user profile ...",
+        success: "Profile data updated!",
+        error: "failed to update your profile!",
+      });
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
     }
+    router.refresh();
   }
 
   return (
@@ -78,6 +76,24 @@ export default function UserProfileForm(data: {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="id"
+          render={({ field }) => (
+            <FormItem className="hidden">
+              <FormLabel>id</FormLabel>
+              <FormControl>
+                <Input disabled placeholder="shadcn" type="" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit">Update Account</Button>
       </form>
     </Form>

@@ -44,23 +44,20 @@ export async function register(data: RegisterUser) {
     }
 
     // Log the successful registration
-    await logAction(
-      user[0].id,
-      "CREATE",
-      "users",
-      "User successfully registered",
-      { resourceId: user[0].id }
-    );
+    await logAction(user[0].id, "CREATE", "users", "This user registered", {
+      resourceId: user[0].id,
+    });
 
     return { success: true, message: "User registered successfully" };
   } catch (error) {
     if (error instanceof Error) {
-      return { success: false, message: error.message };
+      console.error(error.message);
+      throw error;
     } else {
-      return { success: false, message: "An unexpected error occurred" };
+      console.error(error);
+      throw error;
     }
   }
-  // redirect("/auth/login");
 }
 
 export async function login(email: string, password: string) {
@@ -93,12 +90,13 @@ export async function login(email: string, password: string) {
     // return { success: true, message: "Logged In!" };
   } catch (error) {
     if (error instanceof Error) {
-      return { success: false, message: error.message };
+      console.error(error.message);
+      throw error;
     } else {
-      return { success: false, message: "An unexpected error occurred" };
+      console.error(error);
+      throw error;
     }
   }
-  // redirect("/dashboard");
 }
 
 export async function logout() {
