@@ -39,9 +39,11 @@ export type LogDataMap = {
   LOGIN: { ip: string };
   LOGOUT: null;
   ERROR: { endpoint?: string; errorMessage?: string };
+  EXPORT: null;
+  IMPORT: null;
 };
 export type LogAction = keyof LogDataMap;
-export type CRUDResource = "users" | "sessions" | "files";
+export type CRUDResource = "users" | "sessions" | "files" | "logs";
 
 //? Table filter options
 export const logActions = [

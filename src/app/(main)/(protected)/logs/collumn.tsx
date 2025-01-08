@@ -1,11 +1,9 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
 import { GetLogs } from "@/actions/log-action";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
-import { DataTableRowActions } from "@/app/(main)/(protected)/logs/data-table-row-actions";
 import { logActions, logResources } from "@/db/schemas";
 import { formatDate } from "@/lib/utils";
 
@@ -140,9 +138,5 @@ export const logsColumns: ColumnDef<GetLogs>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];

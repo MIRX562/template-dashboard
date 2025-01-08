@@ -56,6 +56,32 @@ export async function logDelete(
   });
 }
 
+export async function bulkDeleteLog(data: GetLogs[]) {
+  try {
+    //session validation
+    const { user } = await getCurrentSession();
+    if (!user) {
+      throw new Error(`Not Authorized!!`);
+    }
+
+    await Promise.all(
+      data.map((row) => db.delete(logsTable).where(eq(logsTable.id, row.id)))
+    );
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteLog(id: number) {
+  //session validation
+  const { user } = await getCurrentSession();
+  if (!user) {
+    throw new Error(`Not Authorized!!`);
+  }
+
+  await db.delete(logsTable).where(eq(logsTable.id, id));
+}
+
 // fetcher
 export async function getLogs() {
   try {
