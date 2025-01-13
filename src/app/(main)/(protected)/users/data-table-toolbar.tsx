@@ -5,19 +5,19 @@ import { Trash2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { logActions, logResources } from "@/db/schemas";
+import { DataTableViewOptions } from "../../../../components/data-table-view-options";
+import { DataTableFacetedFilter } from "../../../../components/data-table-faceted-filter";
+import { userRoles } from "@/db/schemas";
 import { ExportButton } from "@/components/export-button";
 import { toast } from "sonner";
-import { bulkDeleteLog } from "@/actions/log-action";
 import { useRouter } from "next/navigation";
-import { DataTableFacetedFilter } from "@/components/data-table-faceted-filter";
-import { DataTableViewOptions } from "@/components/data-table-view-options";
+import { bulkDeleteUser } from "@/actions/user-action";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
-export function DataTableToolbar<TData>({
+export function UsersDataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -31,23 +31,16 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between w-full">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter logs..."
+          placeholder="Filter Users..."
           value={table.getState().globalFilter ?? ""}
           onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("action") && (
+        {table.getColumn("role") && (
           <DataTableFacetedFilter
-            column={table.getColumn("action")}
-            title="Action"
-            options={logActions}
-          />
-        )}
-        {table.getColumn("resource") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("resource")}
-            title="Resource"
-            options={logResources}
+            column={table.getColumn("role")}
+            title="Role"
+            options={userRoles}
           />
         )}
         {isFiltered && (
@@ -75,7 +68,7 @@ export function DataTableToolbar<TData>({
                     action: {
                       label: "Delete",
                       onClick: () => {
-                        toast.promise(bulkDeleteLog(selectedData), {
+                        toast.promise(bulkDeleteUser(selectedData), {
                           loading: "deleting slected log...",
                           success: "deleted!",
                           error: "error happened, canceling delete!",

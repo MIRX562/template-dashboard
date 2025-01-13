@@ -101,7 +101,9 @@ export default function ResetPasswordForm(data: { id: string }) {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" variant="destructive">
+          Reset Password
+        </Button>
       </form>
     </Form>
   );

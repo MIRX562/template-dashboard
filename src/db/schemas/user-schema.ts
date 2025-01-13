@@ -8,6 +8,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { ShieldCheck, User2 } from "lucide-react";
 import { z } from "zod";
 
 export const rolesEnum = pgEnum("roles", ["Admin", "Employee"]);
@@ -71,5 +72,28 @@ export const createUserSchema = z.object({
   email: z.string().email(),
   password: z.string(),
   role: z.enum(["Admin", "Employee"]),
+  // avatarUrl: z.string().optional(),
 });
 export type CreateUser = z.infer<typeof createUserSchema>;
+
+export const updateUserSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  role: z.enum(["Admin", "Employee"]),
+});
+export type UpdateUser = z.infer<typeof updateUserSchema>;
+
+//? Table filter options
+export const userRoles = [
+  {
+    value: "Admin",
+    label: "Admin",
+    icon: ShieldCheck,
+  },
+  {
+    value: "Employee",
+    label: "Employee",
+    icon: User2,
+  },
+];

@@ -24,8 +24,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataTableToolbar } from "./data-table-toolbar";
-import { DataTablePagination } from "../../../../components/data-table-pagination";
+import { UsersDataTableToolbar } from "./data-table-toolbar";
+import { DataTablePagination } from "@/components/data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,7 +33,7 @@ interface DataTableProps<TData, TValue> {
   insertDataComponent?: React.ReactNode;
 }
 
-export function LogsDataTable<TData, TValue>({
+export function UsersDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -69,7 +69,7 @@ export function LogsDataTable<TData, TValue>({
 
   return (
     <div className="space-y-4 w-full pb-4">
-      <DataTableToolbar table={table} />
+      <UsersDataTableToolbar table={table} />
       <div className="max-w-full overflow-x-auto rounded-md border">
         <Table className="table-auto text-sm">
           <TableHeader>

@@ -7,7 +7,7 @@ import CopyToClipboardButton from "@/components/copy-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { getInitials } from "@/lib/utils";
-import { ProfileImageUpload } from "@/components/profile-image-upload";
+import { ProfileImageUpload } from "@/app/(main)/profile/profile-image-upload";
 
 export default async function ProfielPage() {
   const { user } = await getCurrentSession();

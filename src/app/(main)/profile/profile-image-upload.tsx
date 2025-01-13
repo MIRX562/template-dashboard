@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarImage } from "../../../components/ui/avatar";
+import { updateUserImage } from "@/actions/user-action";
 
 export function ProfileImageUpload() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -36,11 +37,13 @@ export function ProfileImageUpload() {
       setPreviewUrl(null);
     }
   };
+  const image = new FormData();
+  image.append("file", selectedFile);
 
   const handleUpload = () => {
     if (selectedFile) {
       // Here you would typically upload the file to your server or cloud storage
-      console.log("Uploading file:", selectedFile.name);
+      updateUserImage(image);
       // Reset the state after upload
       setSelectedFile(null);
       setPreviewUrl(null);
@@ -67,7 +70,7 @@ export function ProfileImageUpload() {
         <DialogHeader>
           <DialogTitle>Upload Profile Image</DialogTitle>
           <DialogDescription>
-            Choose an image file to upload as your profile picture.
+            Choose an image file to upload as profile picture.(2MB max)
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

@@ -1,20 +1,12 @@
 "use server";
-import { fileTable, FileType } from "@/db/schemas";
+import { fileTable } from "@/db/schemas";
 import { logAction } from "./log-action";
 import { getCurrentSession } from "@/lib/auth";
 import path from "path";
 import fs from "fs/promises";
 import { db } from "@/db";
 import { eq } from "drizzle-orm";
-
-export function determineFileType(mimeType: string): FileType {
-  if (mimeType.startsWith("image/")) return "image";
-  if (mimeType.startsWith("video/")) return "video";
-  if (mimeType.startsWith("audio/")) return "audio";
-  if (mimeType.includes("spreadsheet")) return "sheet";
-  if (mimeType.includes("text") || mimeType.includes("pdf")) return "document";
-  return "document";
-}
+import { determineFileType } from "@/lib/utils";
 
 export async function uploadFile(formData: FormData) {
   try {
@@ -24,11 +16,14 @@ export async function uploadFile(formData: FormData) {
       throw new Error(`Not Authorized!!`);
     }
     // Extract form values and the file
-    // const fields = Object.fromEntries(formData.entries());
     const file = formData.get("file") as File | null;
-
     if (!file) {
       throw new Error("No file provided");
+    }
+
+    // Limit file size allowed
+    if (file.size > 1024 * 1024 * 2) {
+      throw new Error("File is too big");
     }
 
     // Validate MIME type
@@ -145,6 +140,96 @@ export async function updateFile(fileUrl: string, formData: FormData) {
     if (!user) {
       throw new Error(`Not Authorized!!`);
     }
+
+    // Fetch the existing file metadata from the database
+    const existingFileMetadata = await db
+      .select()
+      .from(fileTable)
+      .where(eq(fileTable.url, fileUrl))
+      .limit(1)
+      .execute();
+
+    if (existingFileMetadata.length === 0) {
+      throw new Error("File not found");
+    }
+
+    const existingFile = existingFileMetadata[0];
+
+    // Extract the new file from FormData
+    const newFile = formData.get("file") as File | null;
+    if (!newFile) {
+      throw new Error("No file provided");
+    }
+
+    // Validate the new file's MIME type
+    const fileType = determineFileType(newFile.type);
+    if (!fileType) {
+      throw new Error(`Unsupported file type: ${newFile.type}`);
+    }
+
+    // Generate unique file name and path for the new file
+    const newFileName = `${user.id}-${newFile.name}`;
+    const newFilePath = path.join(process.cwd(), "uploads", newFileName);
+
+    // Ensure the uploads directory exists
+    await fs.mkdir(path.dirname(newFilePath), { recursive: true });
+
+    // Save the new file to the local directory
+    const newFileBuffer = Buffer.from(await newFile.arrayBuffer());
+    await fs.writeFile(newFilePath, newFileBuffer);
+
+    // Delete the old file from the local directory
+    const oldFilePath = path.join(
+      process.cwd(),
+      "uploads",
+      path.basename(existingFile.url)
+    );
+    try {
+      await fs.unlink(oldFilePath);
+    } catch {
+      console.warn(`Old file not found or already deleted: ${oldFilePath}`);
+    }
+
+    // Update the file metadata in the database
+    await db
+      .update(fileTable)
+      .set({
+        url: `/uploads/${newFileName}`,
+        type: fileType,
+        mimeType: newFile.type,
+        size: newFile.size,
+        uploadedBy: user.id,
+      })
+      .where(eq(fileTable.id, existingFileMetadata[0].id));
+
+    return {
+      success: true,
+      message: "File updated successfully",
+      file: {
+        id: existingFileMetadata[0].id,
+        url: `/uploads/${newFileName}`,
+        type: fileType,
+      },
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error);
+      throw error;
+    } else {
+      console.error(error);
+      throw error;
+    }
+  }
+}
+
+export async function updateUserImageFile(formData: FormData) {
+  try {
+    //session validation
+    const { user } = await getCurrentSession();
+    if (!user) {
+      throw new Error(`Not Authorized!!`);
+    }
+    const fileUrl = user.avatarUrl;
 
     // Fetch the existing file metadata from the database
     const existingFileMetadata = await db

@@ -11,6 +11,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { getCurrentSession } from "@/lib/auth";
+import { Suspense } from "react";
 
 export default async function DashboardLayout({
   children,
@@ -37,7 +38,7 @@ export default async function DashboardLayout({
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 overflow-auto">
-          {children}
+          <Suspense>{children}</Suspense>
         </main>
       </SidebarInset>
     </SidebarProvider>
